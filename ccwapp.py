@@ -17,7 +17,7 @@ def index():
 
 	
 	
-@app.route('/test')
+@app.route('/cp')
 def test():
     #A Flask view to serve the welome page.
 	
@@ -25,6 +25,6 @@ def test():
 	#Get data for chart #1
 	#Get data for chart #2
 	
-	return render_template("charttest.html")	
+	return render_template("controlpanel.html")	
 	
 	
