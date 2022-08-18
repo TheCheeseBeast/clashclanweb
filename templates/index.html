@@ -10,7 +10,7 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="../static/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>	
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>	
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -46,7 +46,7 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area me-1"></i>
-                                        Amount of players tried over time
+                                        Attempts made from BEAST output
                                     </div>
                                     <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
 									<script>
@@ -54,9 +54,9 @@
 										new Chart(ctx, {
 												type: 'line',
 												data: {
-													labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+													labels: ["Today","Yesterday","Today-2","Today-3","Today-4","Today-5","Today-6"],
 													datasets: [{
-														label: "Sessions",
+														label: "Last Tried",
 														lineTension: 0.3,
 														backgroundColor: "rgba(2,117,216,0.2)",
 														borderColor: "rgba(2,117,216,1)",
@@ -67,7 +67,19 @@
 														pointHoverBackgroundColor: "rgba(2,117,216,1)",
 														pointHitRadius: 50,
 														pointBorderWidth: 2,
-														data: {{values_1}}
+														data: [{
+																t: '2015-03-15T13:03:00Z',
+																y: 12
+															},
+															{
+																t: '2015-03-25T13:02:00Z',
+																y: 0
+															},
+															{
+																t: '2015-04-25T14:12:00Z',
+																y: 32
+															}
+														],
 													}],
 												},
 												options: {
@@ -86,7 +98,6 @@
 														yAxes: [{
 															ticks: {
 																min: 0,
-																max: 40000,
 																maxTicksLimit: 5
 															},
 															gridLines: {
@@ -117,7 +128,7 @@
 											data: {
 												labels: ["th13", "th14"],
 												datasets: [{
-													label: "Revenue",
+													label: "clanless accounts",
 													backgroundColor: "rgba(2,117,216,1)",
 													borderColor: "rgba(2,117,216,1)",
 													data: {{th_stats}}
