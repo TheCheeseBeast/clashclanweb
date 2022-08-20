@@ -72,7 +72,7 @@ def getPlayerInfo():
 	spells = full_player['spells']
 	
 	
-	test = {"name" : name, "th": th}
+	test = {"name" : name, "th": th, "troops" : troops}
 	
 	#print(full_player)
 	#print(full_player)
