@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import request
 from flask import render_template
 from db import DB
 import os
@@ -53,15 +54,18 @@ def index():
 	
 	#have an attempt button, to increment attempts, would need refresh?	
 	test="Ajax Testing!!!"
+	player_id = ""
 	return render_template("index.html", attempts_stats=attempts_stats, th_stats=th_stats, clanless_bods=clanless_bods, test=test)
 
 	
 	
 @app.route("/test", methods=["POST"])
 def getPlayerInfo():
-	print("Testing Ajax!")
-	test="Ajax Testing!!!"
-	return str(test)
+	player_id_bytes =  request.get_data('player_id');
+	player_id = player_id_bytes.decode('utf-8')
+	print(str(player_id))
+	return "Returned from flask: " +str(player_id)
+
 	
 @app.route('/cp')
 def test():
