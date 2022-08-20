@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import request
-from flask import render_template
+from flask import Flask, request, jsonify, render_template
 from db import DB
 import os
 import addons 
@@ -63,8 +61,25 @@ def index():
 def getPlayerInfo():
 	player_id_bytes =  request.get_data('player_id');
 	player_id = player_id_bytes.decode('utf-8')
-	print(str(player_id))
-	return "Returned from flask: " +str(player_id)
+	full_player = addons.getPlayerStats(player_id)
+	
+	
+	name = full_player['name']
+	th=full_player['townHallLevel']
+	warStars = full_player['warStars']
+	troops = full_player['troops']
+	heroes = full_player['heroes']
+	spells = full_player['spells']
+	
+	
+	test = {"name" : name, "th": th}
+	
+	#print(full_player)
+	#print(full_player)
+	#print(str(full_player['name']))
+	#name, th, troop/spell/hero levels, war stars
+	
+	return (test)
 
 	
 @app.route('/cp')
