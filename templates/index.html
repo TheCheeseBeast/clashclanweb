@@ -204,9 +204,11 @@
 								</div>
 								<div class="modal-body">
 									<p><b>TH: </b><span id="modal-th"></span></p>
+									<p><b>War Stars: </b><span id="modal-warStars"></span></p>									
+									<p><b>HEROS:</b> BK=<span id="modal-bk"></span>, AQ=<span id="modal-aq"></span>, GW=<span id="modal-gw"></span>, RC=<span id="modal-rc"></span></p>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+									
 								</div>
 							</div>
 						</div>
@@ -233,13 +235,7 @@
 			console.log("Player: " +player['id'])
 			player_id = player['id']
 			const request = new XMLHttpRequest();
-			request.open('POST', `/test`);
-			//request.onload = () => {
-			//	const response = request.responseText;
-			//	player_info_from_ajax = JSON.stringify(response)
-			//	console.log(player_info_from_ajax)
-			//	document.getElementById('modal-text').innerHTML = "Test";
-			//};
+			request.open('POST', `/getPlayerInfo`);
 			request.onreadystatechange=function()
 			{
 				if (request.readyState==4 && request.status==200)
@@ -249,6 +245,11 @@
 					json_response = JSON.parse(response)
 					document.getElementById('modal-name').innerHTML = json_response['name'];
 					document.getElementById('modal-th').innerHTML = json_response['th'];
+					document.getElementById('modal-bk').innerHTML = json_response['heroes']['bk'];
+					document.getElementById('modal-aq').innerHTML = json_response['heroes']['aq'];
+					document.getElementById('modal-gw').innerHTML = json_response['heroes']['gw'];
+					document.getElementById('modal-rc').innerHTML = json_response['heroes']['rc'];
+					document.getElementById('modal-warStars').innerHTML = json_response['war_stars'];
 					myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {keyboard: false})
 					myModal.show()
 				}

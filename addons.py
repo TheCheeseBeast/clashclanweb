@@ -18,5 +18,25 @@ def getPlayerStats(tag):
 	url_encoded_player_tag = tag.replace('#', '%23')
 	response = requests.get('https://api.clashofclans.com/v1/players/' + url_encoded_player_tag, headers=headersAPI, verify=True)
 	player_info = response.json()	
-	return player_info
+	
+	player_name = player_info['name']
+	player_th=player_info['townHallLevel']
+	player_war_stars = player_info['warStars']
+	all_player_heroes=player_info['heroes']
+	player_heroes={}
+	for hero in all_player_heroes:
+		if (hero.get('village') == 'home'):
+			if (hero.get('name') == 'Barbarian King'):
+				print("BK level: " +str(hero.get('level')))
+				player_heroes['bk'] = hero['level']
+			elif (hero.get('name') == 'Archer Queen'):
+				player_heroes['aq'] = hero['level']
+			elif (hero.get('name') == 'Grand Warden'):
+				player_heroes['gw'] = hero['level']
+			elif (hero.get('name') == 'Royal Champion'):
+				player_heroes['rc'] = hero['level']
+	
+	mini_player = {"name" : player_name, "th": player_th, "war_stars": player_war_stars, "heroes": player_heroes}
+		
+	return mini_player
 

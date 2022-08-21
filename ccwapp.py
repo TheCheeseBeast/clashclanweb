@@ -57,29 +57,13 @@ def index():
 
 	
 	
-@app.route("/test", methods=["POST"])
+@app.route("/getPlayerInfo", methods=["POST"])
 def getPlayerInfo():
 	player_id_bytes =  request.get_data('player_id');
 	player_id = player_id_bytes.decode('utf-8')
-	full_player = addons.getPlayerStats(player_id)
-	
-	
-	name = full_player['name']
-	th=full_player['townHallLevel']
-	warStars = full_player['warStars']
-	troops = full_player['troops']
-	heroes = full_player['heroes']
-	spells = full_player['spells']
-	
-	
-	test = {"name" : name, "th": th, "troops" : troops}
-	
-	#print(full_player)
-	#print(full_player)
-	#print(str(full_player['name']))
-	#name, th, troop/spell/hero levels, war stars
-	
-	return (test)
+	player_data = addons.getPlayerStats(player_id)
+	#print(player_data)
+	return (player_data)
 
 	
 @app.route('/cp')
