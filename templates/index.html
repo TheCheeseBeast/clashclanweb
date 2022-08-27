@@ -181,12 +181,12 @@
                                         <tr>
                                             <td>{{player.id}}</td>
                                             <td>{{player.th}}</td>
-                                            <td>{{player.last_attempt}}</td>
+                                            <td id="{{player.id}}-ajaxLastAttempt">{{player.last_attempt}}</td>
                                             <td>{{player.no_clan_detected}}</td>											
-                                            <td>{{player.attempts}}</td>
+                                            <td id="{{player.id}}-ajaxAttempts">{{player.attempts}}</td>
                                             <td>{{player.banned}}</td>
-											<td><button type="button" onclick="getPlayerInfo({{player}});" class="test btn btn-info btn-sm">info</button></td>
-											<td><button type="button" class="test btn btn-primary btn-sm">Attempt</button></td>
+											<td><button type="button" onclick="getPlayerInfo({{player}});" class="btn btn-info btn-sm">info</button></td>
+											<td><button type="button" onclick="tryPlayer({{player}});" class="btn btn-primary btn-sm">try</button></td>
                                         </tr>
 									{%endfor%}
                                     </tbody>
@@ -232,7 +232,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 	<script>
 		function getPlayerInfo(player){
-			console.log("Player: " +player['id'])
 			player_id = player['id']
 			const request = new XMLHttpRequest();
 			request.open('POST', `/getPlayerInfo`);
@@ -240,7 +239,6 @@
 			{
 				if (request.readyState==4 && request.status==200)
 				{
-					console.log("Now Ready");
 					const response = request.responseText;
 					json_response = JSON.parse(response)
 					document.getElementById('modal-name').innerHTML = json_response['name'];
@@ -256,6 +254,38 @@
 			}
 			request.send(player_id);	
 		}
+		
+		
+		function tryPlayer(player){
+			console.log("Trying Player: " +player['id'])
+			player_id = player['id']
+			player_attempts = document.getElementById(player_id+'-ajaxAttempts').innerHTML
+			console.log("player_attempts: " +player_attempts)
+			
+			const request = new XMLHttpRequest();
+			request.open('POST', `/tryPlayer`);
+			request.onreadystatechange=function()
+			{
+				if (request.readyState==4 && request.status==200)
+				{
+					const response = request.responseText;
+					json_response = JSON.parse(response)
+					console.log(json_response)
+					console.log(json_response['lastAttempt'])
+					console.log(json_response['attempts'])					
+					
+					document.getElementById(player_id+'-ajaxLastAttempt').innerHTML = json_response['lastAttempt'];
+					document.getElementById(player_id+'-ajaxAttempts').innerHTML = json_response['attempts'];
+				}
+			}
+			console.log("prereq player id: "+player_id);
+			console.log("prereq player_attempts: "+player_attempts);
+			//request.send(player_id, player_attempts);
+			//data = {"player_attempts":player_attempts, "player_id":player_id}
+			request.send(player_attempts+'-'+player_id);
+		}		
+		
+		
 	</script>
     <script src="../static/js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>

@@ -54,18 +54,15 @@ class DB(object):
 		except Exception as err:
 			print("Error: " +str(err))		
 
-			
-'''
-	def getPlayersWithoutClan(self):
+	def upsertPlayer(self, player_id, player_attempts, player_last_attempt):
 		cursor = self.conn.cursor()
 		try:
-			stmt = "SELECT ID FROM player_info WHERE inClan = 'false'"
-			cursor.execute(stmt)
-			results = cursor.fetchall()
-			tags_list = []
-			for row in results:
-				tags_list.append(str(row[0]))
-			return tags_list
+			stmt = "INSERT INTO player_info (id, attempts, last_attempt, inclan, th) VALUES (%s,%s,%s,%s,%s) ON CONFLICT(id) DO UPDATE SET attempts=excluded.attempts, last_attempt=excluded.last_attempt"
+			cursor.execute(stmt, (player_id, player_attempts, player_last_attempt, 'false', '0'))
+			self.conn.commit()
 		except Exception as err:
-			print("Error: " +str(err))			
-'''
+			print("Error #2: " +str(err))					
+
+			
+		
+			
