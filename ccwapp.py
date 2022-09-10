@@ -22,24 +22,23 @@ def index():
 	th14_stats = sum(x.get('th') == '14' for x in clanless_bods)
 	th_stats = [th13_stats, th14_stats]
 
+	print(clanless_bods)
+	
 	#Graph: Attempts Made
 	dt_now_zerod = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-	tminus0 = sum((dt_now_zerod-timedelta(days=1) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_zerod-timedelta(days=0) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
-	tminus1 = sum((dt_now_zerod-timedelta(days=2) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_zerod-timedelta(days=1) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
-	tminus2 = sum((dt_now_zerod-timedelta(days=3) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_zerod-timedelta(days=2) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
-	tminus3 = sum((dt_now_zerod-timedelta(days=4) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_zerod-timedelta(days=3) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
-	tminus4 = sum((dt_now_zerod-timedelta(days=5) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_zerod-timedelta(days=4) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
-	tminus5 = sum((dt_now_zerod-timedelta(days=6) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_zerod-timedelta(days=5) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
-	tminus6 = sum((dt_now_zerod-timedelta(days=7) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_zerod-timedelta(days=6) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	dt_now_maxed = datetime.now().replace(hour=23, minute=59, second=59, microsecond=999999)
+	#dt_now_zerod = datetime.now()
+	tminus0 = sum((dt_now_zerod-timedelta(days=0) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=0) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus1 = sum((dt_now_zerod-timedelta(days=1) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=1) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus2 = sum((dt_now_zerod-timedelta(days=2) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=2) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus3 = sum((dt_now_zerod-timedelta(days=3) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=3) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus4 = sum((dt_now_zerod-timedelta(days=4) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=4) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus5 = sum((dt_now_zerod-timedelta(days=5) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=5) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus6 = sum((dt_now_zerod-timedelta(days=6) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=6) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
 	attempts_stats = [tminus0, tminus1, tminus2, tminus3, tminus4, tminus5, tminus6]
 
-	#clanless_bods_data = {}
-	#for player in clanless_bods:
-	#	player_info_from_api = addons.getPlayerStats(player['id'])
-	#	print("waiting....")
-	#	clanless_bods_data.update({player['id'] : player_info_from_api})
 
-		#preloader if this take a bit of time.....
+	#preloader if this take a bit of time.....
 	#https://codepen.io/RaulC/pen/KgWZjo
 
 	#https://getbootstrap.com/docs/4.0/components/modal/
@@ -70,7 +69,7 @@ def getPlayerInfo():
 @app.route("/tryPlayer", methods=["POST"])
 def tryPlayer():
 	#update db, attempt num and new date
-	
+
 	split_response  = request.get_data().decode('utf-8').split("-")
 	player_attempts = split_response[0]
 	player_id = split_response[1]
@@ -87,7 +86,24 @@ def tryPlayer():
 	db=DB();
 	db.upsertPlayer(player_id, player_attempts, player_last_attempt);
 	
-	hmmm = {"attempts":str(player_attempts), "lastAttempt":player_last_attempt}
+		
+	#db=DB()
+	clanless_bods = db.getPlayersWithoutClan()
+	#Graph: Attempts Made
+	dt_now_zerod = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+	dt_now_maxed = datetime.now().replace(hour=23, minute=59, second=59, microsecond=999999)
+	#dt_now_zerod = datetime.now()
+	tminus0 = sum((dt_now_zerod-timedelta(days=0) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=0) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus1 = sum((dt_now_zerod-timedelta(days=1) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=1) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus2 = sum((dt_now_zerod-timedelta(days=2) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=2) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus3 = sum((dt_now_zerod-timedelta(days=3) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=3) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus4 = sum((dt_now_zerod-timedelta(days=4) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=4) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus5 = sum((dt_now_zerod-timedelta(days=5) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=5) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	tminus6 = sum((dt_now_zerod-timedelta(days=6) < (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S'))) and (dt_now_maxed-timedelta(days=6) > (datetime.strptime(x['last_attempt'], '%Y-%m-%d %H:%M:%S')))for x in clanless_bods)
+	attempts_stats = [tminus0, tminus1, tminus2, tminus3, tminus4, tminus5, tminus6]
+	
+	
+	hmmm = {"attempts":str(player_attempts), "lastAttempt":player_last_attempt, "attempts_stats":attempts_stats}
 	print(hmmm)
 	return (hmmm)
 	#return "test"

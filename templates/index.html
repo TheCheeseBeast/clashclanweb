@@ -11,6 +11,60 @@
         <link href="../static/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>	
+		
+									<script>
+									function drawLineChart(dataVals)
+									{
+										var attempts_stats = {{attempts_stats}}
+										var ctx = document.getElementById("myAreaChart");
+										const areaChart = new Chart(ctx, {
+												type: 'line',
+												data: {
+													labels: ["T-1","T-2","T-3","T-4","T-5","T-6","T-7"],
+													datasets: [{
+														label: "Attempts",
+														lineTension: 0.3,
+														backgroundColor: "rgba(2,117,216,0.2)",
+														borderColor: "rgba(2,117,216,1)",
+														pointRadius: 5,
+														pointBackgroundColor: "rgba(2,117,216,1)",
+														pointBorderColor: "rgba(255,255,255,0.8)",
+														pointHoverRadius: 5,
+														pointHoverBackgroundColor: "rgba(2,117,216,1)",
+														pointHitRadius: 50,
+														pointBorderWidth: 2,
+														
+														data: dataVals
+													}],
+												},
+												options: {
+													scales: {
+														xAxes: [{
+															gridLines: {
+																display: false
+															},
+															ticks: {
+																stepSize: 1
+															}
+														}],
+														yAxes: [{
+															ticks: {
+																min: 0,															
+																stepSize: 1
+															},
+															gridLines: {
+																color: "rgba(0, 0, 0, .125)",
+															}
+														}],
+													},
+													legend: {
+														display: false
+													}
+												}
+											});
+									}
+									</script>		
+		
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -46,55 +100,11 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area me-1"></i>
-                                        Attempts Made: Shown in 24 Hours Periods from Now
+                                        Players Attempted in 24 Hours Periods
                                     </div>
                                     <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
 									<script>
-										var ctx = document.getElementById("myAreaChart");
-										new Chart(ctx, {
-												type: 'line',
-												data: {
-													labels: ["T-1","T-2","T-3","T-4","T-5","T-6","T-7"],
-													datasets: [{
-														label: "Attempts",
-														lineTension: 0.3,
-														backgroundColor: "rgba(2,117,216,0.2)",
-														borderColor: "rgba(2,117,216,1)",
-														pointRadius: 5,
-														pointBackgroundColor: "rgba(2,117,216,1)",
-														pointBorderColor: "rgba(255,255,255,0.8)",
-														pointHoverRadius: 5,
-														pointHoverBackgroundColor: "rgba(2,117,216,1)",
-														pointHitRadius: 50,
-														pointBorderWidth: 2,
-														data: {{attempts_stats}}
-													}],
-												},
-												options: {
-													scales: {
-														xAxes: [{
-															gridLines: {
-																display: false
-															},
-															ticks: {
-																stepSize: 1
-															}
-														}],
-														yAxes: [{
-															ticks: {
-																min: 0,															
-																stepSize: 1
-															},
-															gridLines: {
-																color: "rgba(0, 0, 0, .125)",
-															}
-														}],
-													},
-													legend: {
-														display: false
-													}
-												}
-											});
+									drawLineChart({{attempts_stats}})
 									</script>
                                 </div>
                             </div>
@@ -107,6 +117,7 @@
                                     <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
 									<script>
 									
+										var test = {{th_stats}}
 										var ctx = document.getElementById("myBarChart");
 										new Chart(ctx, {
 											type: 'bar',
@@ -116,7 +127,7 @@
 													label: "clanless accounts",
 													backgroundColor: "rgba(2,117,216,1)",
 													borderColor: "rgba(2,117,216,1)",
-													data: {{th_stats}}
+													data: test
 												}],
 											},
 											options: {
@@ -231,6 +242,8 @@
 	    </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 	<script>
+		
+		
 		function getPlayerInfo(player){
 			player_id = player['id']
 			const request = new XMLHttpRequest();
@@ -255,6 +268,16 @@
 			request.send(player_id);	
 		}
 		
+		function addData(chart, label, data) {
+				chart.data.labels.push(label);
+				chart.data.datasets.forEach((dataset) => {
+				dataset.data.push(data);
+			});
+			chart.update();
+		}
+		
+		
+		
 		
 		function tryPlayer(player){
 			console.log("Trying Player: " +player['id'])
@@ -273,7 +296,14 @@
 					console.log(json_response)
 					console.log(json_response['lastAttempt'])
 					console.log(json_response['attempts'])					
+					console.log(json_response['attempts_stats'])
 					
+					//window.globVarStats = json_response['attempts_stats'] 
+					console.log(json_response['attempts_stats'])
+					//addData(myAreaChart, 'T-1', 10)
+					//areaChart.data.labels['T-1']=10;
+					//areaChart.data.datasets[0].data = [50, 50, 50, 50,0,0,0];
+					drawLineChart(json_response['attempts_stats']);
 					document.getElementById(player_id+'-ajaxLastAttempt').innerHTML = json_response['lastAttempt'];
 					document.getElementById(player_id+'-ajaxAttempts').innerHTML = json_response['attempts'];
 				}
