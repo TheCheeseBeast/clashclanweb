@@ -1,1 +1,1 @@
-web: gunicorn ccwapp:app
+web: gunicorn ccwapp:app --preload
