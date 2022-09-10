@@ -11,60 +11,56 @@
         <link href="../static/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>	
-		
-									<script>
-									function drawLineChart(dataVals)
-									{
-										var attempts_stats = {{attempts_stats}}
-										var ctx = document.getElementById("myAreaChart");
-										const areaChart = new Chart(ctx, {
-												type: 'line',
-												data: {
-													labels: ["T-1","T-2","T-3","T-4","T-5","T-6","T-7"],
-													datasets: [{
-														label: "Attempts",
-														lineTension: 0.3,
-														backgroundColor: "rgba(2,117,216,0.2)",
-														borderColor: "rgba(2,117,216,1)",
-														pointRadius: 5,
-														pointBackgroundColor: "rgba(2,117,216,1)",
-														pointBorderColor: "rgba(255,255,255,0.8)",
-														pointHoverRadius: 5,
-														pointHoverBackgroundColor: "rgba(2,117,216,1)",
-														pointHitRadius: 50,
-														pointBorderWidth: 2,
-														
-														data: dataVals
-													}],
-												},
-												options: {
-													scales: {
-														xAxes: [{
-															gridLines: {
-																display: false
-															},
-															ticks: {
-																stepSize: 1
-															}
-														}],
-														yAxes: [{
-															ticks: {
-																min: 0,															
-																stepSize: 1
-															},
-															gridLines: {
-																color: "rgba(0, 0, 0, .125)",
-															}
-														}],
-													},
-													legend: {
-														display: false
-													}
-												}
-											});
-									}
-									</script>		
-		
+		<script>
+			function drawLineChart(dataVals){
+				var attempts_stats = {{attempts_stats}}
+				var ctx = document.getElementById("myAreaChart");
+				const areaChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: ["T-1","T-2","T-3","T-4","T-5","T-6","T-7"],
+						datasets: [{
+							label: "Attempts",
+							lineTension: 0.3,
+							backgroundColor: "rgba(2,117,216,0.2)",
+							borderColor: "rgba(2,117,216,1)",
+							pointRadius: 5,
+							pointBackgroundColor: "rgba(2,117,216,1)",
+							pointBorderColor: "rgba(255,255,255,0.8)",
+							pointHoverRadius: 5,
+							pointHoverBackgroundColor: "rgba(2,117,216,1)",
+							pointHitRadius: 50,
+							pointBorderWidth: 2,
+							data: dataVals
+						}],
+					},
+					options: {
+						scales: {
+							xAxes: [{
+								gridLines: {
+									display: false
+								},
+								ticks: {
+									stepSize: 1
+								}
+							}],
+							yAxes: [{
+								ticks: {
+									min: 0,															
+									stepSize: 1
+								},
+								gridLines: {
+									color: "rgba(0, 0, 0, .125)",
+								}
+							}],
+						},
+						legend: {
+							display: false
+						}
+					}
+				});
+			}
+	</script>		
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
