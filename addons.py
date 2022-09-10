@@ -11,7 +11,7 @@ CLASH_TOKEN = os.getenv('CLASH_TOKEN')
 ## Define header for making API calls that will hold authentication data
 headersAPI = {
     'accept': 'application/json',
-    'Authorization': 'Bearer '+ CLASH_TOKEN,
+    'Authorization': 'Bearer '+ str(CLASH_TOKEN),
 }
 
 def getPlayerStats(tag):
