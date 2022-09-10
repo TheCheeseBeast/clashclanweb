@@ -17,16 +17,16 @@ class DB(object):
 
 	#init method or constructor
 	def __init__(self):
-		#DATABASE_URL = os.environ['DATABASE_URL']
-		#self.conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-		self.conn = psycopg2.connect(
-		host=DATABASE_HOST,
-		database=DATABASE_TABLE,
-		user=DATABASE_USER,
-		#password=DATABASE_PASSWORD, sslmode='require')	#Required for Heroku connection
-		password=DATABASE_PASSWORD)
-		#port=DATABASE_PORT)
-		self.conn.set_session(autocommit=True)
+		DATABASE_URL = os.environ['DATABASE_URL']
+		self.conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+		
+		#------ Local Dev
+		#self.conn = psycopg2.connect(
+		#host=DATABASE_HOST,
+		#database=DATABASE_TABLE,
+		#user=DATABASE_USER,
+		#password=DATABASE_PASSWORD)
+		#self.conn.set_session(autocommit=True)
 	
 	def __del__(self):
 		self.conn.close()
