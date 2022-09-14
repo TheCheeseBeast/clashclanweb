@@ -18,7 +18,8 @@ def getPlayerStats(tag):
 	url_encoded_player_tag = tag.replace('#', '%23')
 	response = requests.get('https://api.clashofclans.com/v1/players/' + url_encoded_player_tag, headers=headersAPI, verify=True)
 	player_info = response.json()	
-	
+	print("Player Info:")	
+	print(player_info)
 	player_name = player_info['name']
 	player_th=player_info['townHallLevel']
 	player_war_stars = player_info['warStars']
