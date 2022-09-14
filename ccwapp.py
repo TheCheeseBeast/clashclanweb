@@ -56,7 +56,7 @@ def index():
 	return render_template("index.html", attempts_stats=attempts_stats, th_stats=th_stats, clanless_bods=clanless_bods, test=test)
 	
 	
-@app.route("/getPlayerInfo", methods=["POST"])
+@app.route("/getPlayerInfo", methods=['POST', 'GET'])
 def getPlayerInfo():
 	player_id_bytes =  request.get_data('player_id');
 	player_id = player_id_bytes.decode('utf-8')
@@ -66,7 +66,7 @@ def getPlayerInfo():
 
 	
 	
-@app.route("/tryPlayer", methods=["POST"])
+@app.route("/tryPlayer", methods=['POST', 'GET'])
 def tryPlayer():
 	#update db, attempt num and new date
 

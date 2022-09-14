@@ -20,6 +20,13 @@ class DB(object):
 		DATABASE_URL = os.environ['DATABASE_URL']
 		self.conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 		
+		#------ Local Dev
+		#self.conn = psycopg2.connect(
+		#host=DATABASE_HOST,
+		#database=DATABASE_TABLE,
+		#user=DATABASE_USER,
+		#password=DATABASE_PASSWORD)
+		#self.conn.set_session(autocommit=True)
 	
 	def __del__(self):
 		self.conn.close()
