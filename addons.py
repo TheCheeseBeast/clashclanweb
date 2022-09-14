@@ -7,6 +7,13 @@ from dotenv import load_dotenv
 load_dotenv()
 #Set Environment Variables
 CLASH_TOKEN = os.getenv('CLASH_TOKEN')
+FIXIE_URL = os.getenv('FIXIE_URL')
+
+proxyDict = {
+              "http"  : os.environ.get('FIXIE_URL', ''),
+              "https" : os.environ.get('FIXIE_URL', '')
+            }
+
 
 ## Define header for making API calls that will hold authentication data
 headersAPI = {
@@ -16,7 +23,7 @@ headersAPI = {
 
 def getPlayerStats(tag):
 	url_encoded_player_tag = tag.replace('#', '%23')
-	response = requests.get('https://api.clashofclans.com/v1/players/' + url_encoded_player_tag, headers=headersAPI, verify=True)
+	response = requests.get('https://api.clashofclans.com/v1/players/' + url_encoded_player_tag, headers=headersAPI, verify=True, proxies=proxyDict)
 	player_info = response.json()	
 	print("Player Info:")	
 	print(player_info)
